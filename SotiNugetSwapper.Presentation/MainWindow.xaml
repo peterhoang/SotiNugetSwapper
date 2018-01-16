@@ -3,11 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:SotiNugetSwapper.Presentation.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
+        Title="Options" Height="350" Width="525">
+    
+    <Window.Resources>
+        <viewModels:MainViewModel x:Key="ViewModel" />
+    </Window.Resources>
+    
+    <Grid DataContext="{StaticResource ViewModel}">
         <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
-            <ListBox x:Name="listBox" VerticalAlignment="Stretch" Height="300"/>
+            <ListBox x:Name="listBox" VerticalAlignment="Stretch" Height="300" ItemsSource="{Binding NuGetReferences}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                            <TextBlock Text="{Binding Path}"></TextBlock>
+                            <TextBlock Text="{Binding ProjectName}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
     </Grid>
 </Window>
