@@ -4,26 +4,68 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:SotiNugetSwapper.Presentation.ViewModels"
+        xmlns:enums="clr-namespace:SotiNugetSwapper.Presentation.Enums"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Options" Height="350" Width="525">
-    
+        Title="Options" Height="600" Width="800">
+   
     <Window.Resources>
         <viewModels:MainViewModel x:Key="ViewModel" />
+        <ObjectDataProvider x:Key="StatusEnum" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="enums:StatusEnum"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
     
-    <Grid DataContext="{StaticResource ViewModel}">
-        <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
-            <ListBox x:Name="listBox" VerticalAlignment="Stretch" Height="300" ItemsSource="{Binding NuGetReferences}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Name}"></TextBlock>
-                            <TextBlock Text="{Binding Path}"></TextBlock>
-                            <TextBlock Text="{Binding ProjectName}"></TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-    </Grid>
+    <StackPanel Orientation="Vertical" 
+                VerticalAlignment="Stretch"
+                d:DataContext="{d:DesignInstance Type=viewModels:MockViewModel, IsDesignTimeCreatable=True}"
+                DataContext="{StaticResource ViewModel}">
+        <ListBox ItemsSource="{Binding NuGetReferences}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding Name}"></TextBox>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource StatusEnum}}"
+                                  SelectedItem="{Binding Status, Mode=TwoWay}"
+                                  SelectedValue="{Binding Status}"
+                                  Tag="{Binding}"
+                                  SelectionChanged="Selector_OnSelectionChanged">
+                        </ComboBox>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!--<DataGrid ItemsSource="{Binding NuGetReferences}" 
+                  CanUserAddRows="False" 
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name" ></DataGridTextColumn>
+                <DataGridCheckBoxColumn Binding="{Binding IsReplaced, Mode=TwoWay}" Header="Swap?">
+                    <DataGridCheckBoxColumn.CellStyle>
+                        <Style>
+                            <EventSetter Event="CheckBox.Checked" Handler="EventSetter_OnHandler"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.CellStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridComboBoxColumn Header="STATUS"
+                                        ItemsSource="{Binding Source={StaticResource StatusEnum}}"
+                                        SelectedItemBinding="{Binding Status}">
+                </DataGridComboBoxColumn>
+                <DataGridTemplateColumn Header="Status">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Source={StaticResource StatusEnum}}"
+                                      SelectedItem="{Binding SelectedNuGetReference, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedValuePath="Status"
+                                      SelectedValue="{Binding Path=SelectedNuGetReference.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectionChanged="Selector_OnSelectionChanged"></ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>-->
+    </StackPanel>
 </Window>
+

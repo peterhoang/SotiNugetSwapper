@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using EnvDTE;
+using SotiNugetSwapper.Presentation.Enums;
 using SotiNugetSwapper.Presentation.Models;
 using VSLangProj;
 
@@ -21,6 +22,8 @@ namespace SotiNugetSwapper.Presentation.ViewModels
         public DTE Application { get; set; }
 
         public FileInfo SolutionFile { get; set; }
+        
+        public NuGetReferenceModel SelectedNuGetReference { get; set; }
 
         public MainViewModel()
         {
@@ -29,6 +32,7 @@ namespace SotiNugetSwapper.Presentation.ViewModels
         public void Initialize()
         {
             SolutionFile = new FileInfo(Application.Solution.FileName);
+
             LoadReferences();
         }
 

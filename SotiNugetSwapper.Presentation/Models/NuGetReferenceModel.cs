@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Security.Policy;
+using SotiNugetSwapper.Presentation.Enums;
+using SotiNugetSwapper.Presentation.ViewModels;
 using VSLangProj;
 
 namespace SotiNugetSwapper.Presentation.Models
@@ -11,10 +14,17 @@ namespace SotiNugetSwapper.Presentation.Models
 
         public string ProjectName { get; set; }
 
+        public StatusEnum Status { get; set; }
+
+        public bool IsReplaced { get; set; }
+
+        public NuGetReferenceModel() { }
+
         public NuGetReferenceModel(Reference reference)
         {
             Name = reference.Name;
             Path = reference.Path;
+            Status = StatusEnum.DoNotReplace;
             ProjectName = reference.SourceProject?.Name;
         }
 
